@@ -20,14 +20,13 @@ export const deleteContact = async (contactId) => {
   return contact;
 };
 
-export const updateContact = async (contactId, payload, options = {}) => {
-  const rawResult = await ContactsCollection.findByIdAndUpdate({ _id: contactId }, payload, { new: true, includeResultMetadata: true,...options });
+export const updateContact = async (contactId, payload = {}) => {
+  const updatedContact = await ContactsCollection.findByIdAndUpdate(contactId, payload, {
+    new: true,
+    runValidators: true,
+  });
 
-  if (!rawResult || !rawResult.value) return null;
-  
-  return {
-    contact: rawResult.value,
-    isNew: Boolean(rawResult ?. lastErrorObject ?.upserted),
-  };
+  return updatedContact;
 };
+
 
