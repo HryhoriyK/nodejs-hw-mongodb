@@ -6,6 +6,12 @@ export const createContactSchema = Joi.object({
   email: Joi.string().email().required(),
   isFavourite: Joi.boolean().required(),
   contactType: Joi.string().valid('personal', 'work', 'home').required(),
+  parentId: Joi.string().custom((value, helper) => {
+      if (value && !isValidObjectId(value)) {
+        return helper.message('Parent id should be a valid mongo id');
+      }
+      return true;
+    }),
 });
 
 const dataToValidate = {
